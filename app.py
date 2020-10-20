@@ -41,5 +41,21 @@ def show_subpath(subpath):
     return 'Subpath %s' % escape(subpath)
 
 
+@app.route('/projects/')
+def projects():
+    """
+    类型文件夹路径的写法，访问 /projects 时将自动重定向到 /projects/
+    """
+    return 'The project page'
+
+
+@app.route('/about')
+def about():
+    """
+    类型文件路径的写法，只能通过 /about 访问，这样可以保持 URL 唯一，并帮助 搜索引擎避免重复索引同一页面。
+    """
+    return 'The about page'
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
