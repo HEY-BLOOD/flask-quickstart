@@ -20,3 +20,4 @@ if __name__ == "__main__":
         assert request.method == 'POST'
         # 操作 URL（如 ?key=value）中提交的参数可以使用 args 属性
         print(request.args.get('key', None))
+        print('user_agent:', request.user_agent)

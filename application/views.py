@@ -1,4 +1,4 @@
-from flask import escape, url_for, request, render_template, Markup, redirect, flash, send_from_directory
+from flask import escape, url_for, request, render_template, Markup, redirect, flash, send_from_directory, abort
 from flask.helpers import make_response
 from application import app, ALLOWED_EXTENSIONS
 from werkzeug.utils import secure_filename
@@ -143,3 +143,15 @@ def cookies():
     resp = make_response(render_template('cookies.html'))
     resp.set_cookie('username', 'the username')
     return resp
+
+
+@app.route('/secret')
+def secret():
+    """
+    使用 redirect() 函数可以重定向。
+    使用 abort() 可以更早退出请求，并返回错误代码
+    """
+    abort(401)  # 401 表示禁止访问
+
+    # 下面代码不会被执行
+    print("Hello")
