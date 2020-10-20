@@ -57,9 +57,15 @@ def about():
     return 'The about page'
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return 'login'
+    """
+    route() 装饰器的 methods 参数来处理不同的 HTTP 方法\
+    """
+    if request.method == 'POST':
+        return "method: POST"
+    else:
+        return "method: GET"
 
 
 @app.route('/user/<username>')
