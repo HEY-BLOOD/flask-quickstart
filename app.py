@@ -1,4 +1,4 @@
-from flask import Flask, escape, url_for, request
+from flask import Flask, escape, url_for, request, render_template
 
 app = Flask(__name__)
 
@@ -71,6 +71,14 @@ def login():
 @app.route('/user/<username>')
 def profile(username):
     return '{}\'s profile'.format(escape(username))
+
+
+@app.route('/flask_icon')
+def flask_icon():
+    """
+    通常静态文件位于应用的 /static 中。
+    """
+    return url_for('static', filename='images/flask-icon.png')
 
 
 if __name__ == "__main__":
