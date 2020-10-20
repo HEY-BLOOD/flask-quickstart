@@ -63,9 +63,15 @@ def login():
     """
     route() 装饰器的 methods 参数来处理不同的 HTTP 方法
     """
+    error = None
     if request.method == 'POST':
-        return 'method: POST'
-    return 'method: GET'
+        if request.form['username'] == 'blood' and request.form['password'] == 'p@ssw0rd':
+            return '<h1>Welcome %s, login was successful.</h1>' % request.form['username']
+        else:
+            error = 'Invalid username/password'
+    # the code below is executed if the request method
+    # was GET or the credentials were invalid
+    return render_template('login.html', error=error)
 
 
 @app.route('/user/<username>')
