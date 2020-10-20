@@ -1,4 +1,5 @@
 from flask import escape, url_for, request, render_template, Markup, redirect, flash, send_from_directory
+from flask.helpers import make_response
 from application import app, ALLOWED_EXTENSIONS
 from werkzeug.utils import secure_filename
 import os
@@ -6,7 +7,7 @@ import os
 
 @app.route('/')
 def index():
-    return 'Index Page'
+    return render_template('index.html')
 
 
 # 使用 route() 装饰器来把函数绑定到 URL
@@ -126,3 +127,19 @@ def uploaded_file(filename):
     文件上传成功后，在 upload.html 中获取服务器 http://ip:port 的文件路径
     """
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route('/test_cookies')
+def cookies():
+    """
+    Cookies 保存在请求对象的 cookies属性中
+    可以使用响应对象的 set_cookie 方法来设置 cookies 。
+    在 Flask 中，如果使用 会话 ，那么就不要直接使用 cookies ，因为 会话 比较安全一些。
+    """
+    # 读取 cookies
+    username = request.cookies.get('username')
+    # use cookies.get(key) instead of cookies[key] to not get a KeyError if the cookie is missing.
+    # 储存 cookies:使用 make_response() 生成响应对象，在更改响应的 Cookies
+    resp = make_response(render_template('cookies.html'))
+    resp.set_cookie('username', 'the username')
+    return resp
