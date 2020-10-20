@@ -1,5 +1,7 @@
-from flask import escape, url_for, request, render_template, Markup
-from application import app
+from flask import escape, url_for, request, render_template, Markup, redirect, flash, send_from_directory
+from application import app, ALLOWED_EXTENSIONS
+from werkzeug.utils import secure_filename
+import os
 
 
 @app.route('/')
@@ -88,3 +90,39 @@ def flask_icon():
     # 访问静态文件
     url_for('static', filename='images/flask-icon.png')
     return render_template('flask_icon.html')
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    """
+    上传文件
+    """
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)  # 获取到安全的文件名
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # 上传成功后，重定向到该文件
+            return render_template('upload.html', filename=filename)
+    return render_template('upload.html')
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    """
+    文件上传成功后，在 upload.html 中获取服务器 http://ip:port 的文件路径
+    """
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+</head>
+
+<body>
+    <form method=post enctype=multipart/form-data>
+        <input type=file name=file>
+        <input type=submit value=Upload>
+    </form>
+    {% if filename %}
+        <p>文件上传成功，<a href="{{ url_for('uploaded_file', filename=filename) }}">立即查看</a>。<a
+                href="{{ url_for('upload') }}">返回</a></p>
+    {% endif %}
+</body>
+
+</html>
