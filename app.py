@@ -1,5 +1,13 @@
 from application import app
 
+@app.route('/flask-icon')
+def flask_icon():
+    """
+    通常静态文件位于应用的 /static 中。
+    """
+    return url_for('static', filename='images/flask-icon.png')
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
 
