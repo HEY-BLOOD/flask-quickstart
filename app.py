@@ -1,4 +1,4 @@
-from flask import Flask, escape
+from flask import Flask, escape, url_for, request
 
 app = Flask(__name__)
 
@@ -57,5 +57,22 @@ def about():
     return 'The about page'
 
 
+@app.route('/login')
+def login():
+    return 'login'
+
+
+@app.route('/user/<username>')
+def profile(username):
+    return '{}\'s profile'.format(escape(username))
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
+
+    # url_for() 函数用于构建指定函数的 URL。
+    with app.test_request_context():
+        print(url_for('index'))
+        print(url_for('login'))
+        print(url_for('login', next='/'))
+        print(url_for('profile', username='HEY-BLOOD'))
